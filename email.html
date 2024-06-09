@@ -106,15 +106,7 @@ section{
                 margin-bottom:4em
 }
 
-.response{
-                display:block;
-                margin-left:1em;
-                padding:4px;
-                background-color:#ffc;
-                border:1px solid #000;
-                font-family:Courier;
-                font-size:14px
-}
+
 .myborder{
 		font-size:0.8em;
 		border-width:3px; 
@@ -124,23 +116,20 @@ section{
 		padding: .2em;
 }
 
-div.presentation_summary{
-                margin-bottom:6em
-}
 /* @media screen and (max-width: 440px){
                 div.presentation_summary img{
                                 display:block
-                }
-}
+                } */
+/* }
 @media screen and (min-width: 440px){
                 div.presentation_summary img{
                                 float:right
                 }
-}
-@media(prefers-color-scheme:dark){
+} */
+@media (prefers-color-scheme:dark) {
                 body{
                                 
-                                color:white
+                                color:black
                 }
                 a{
                                 color:#FFC0CB
@@ -154,37 +143,9 @@ div.presentation_summary{
                 h1,h1 a,h2,h2 a,h3,h3 a,section#masthead h1 a{
                                 color:#9F2B68
                 }
-} */
+}
 
 
-body#fp {
-                width: 100%;
-                overflow: hidden;
-                padding: 0;
-                margin: 0
-}
-body#fp dt {
-                font-family:Courier; 
-                font-size:0.8em; 
-                float: left;
-                width: 20%;
-                padding: 0;
-                margin: 0
-}
-body#fp dt p{
-                font-family:Courier; 
-                font-size:0.8em; 
-                float: left;
-                width: 20%;
-                padding: 0;
-                margin: 0
-}
-body#fp dd {
-                float: left;
-                width: 80%;
-                padding: 0;
-                margin: 0
-}
 
 .center {
   display: block;
@@ -196,8 +157,8 @@ body#fp dd {
   padding-top:100em;
 }
 .imgstyle {
-  width:100px;
-  height:100px
+  max-width:130px;
+  max-height:230px
 }
 
 </style>
@@ -239,16 +200,15 @@ body#fp dd {
           <tr>
             <th>
               <div class="column is-one-fifth">
-                <img src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80" alt="article_pic" 
-                width="600"
-                height="500"/>
+                <img src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80" alt="article_pic" class="imgstyle"
+                />
                 
               </div>
             </th>
             <th>
               <div class="column">
                 <h2>
-                  <a class="tablepad" href="https://lipsum.com">https://lipsum.com</a>
+                  <a href="https://lipsum.com">https://lipsum.com</a>
                 </h2>
                 <p class="subtitle" style="font-size:0.8em;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s </p>
               </div>
