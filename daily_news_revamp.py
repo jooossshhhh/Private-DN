@@ -175,7 +175,7 @@ def getWotd():
 word = getWotd()
 #print(word)
 webscrapeNews()
-template = open(r'C:\Users\josh.smith\OneDrive - kennypipe.com\Desktop\DN\email.html')
+template = open(r'email.html')
 soup = BeautifulSoup(template.read(), "html.parser")
 #word = BeautifulSoup(word, "html.parser")
 article_template = soup.find('div', attrs={'class':'columns'})
