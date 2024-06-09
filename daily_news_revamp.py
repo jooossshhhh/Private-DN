@@ -29,10 +29,6 @@ def email_alert(subject,body,alternative,recipients):
         msg['subject'] = subject
         
         msg['to'] = recipient
-        # part = MIMEImage(open('C:\\Users\\jpsmi\\fullcoffee.png', 'rb').read())
-        # part.add_header('Content-ID', '<image1>')
-        # msg.attach(part)
-        
         user = email
         password = passwd
         msg['from'] = 'First Sip'
@@ -117,8 +113,6 @@ def webscrapeNews():
 def betterWeather(zipcode):
     base_url = "https://api.openweathermap.org"
     weather_api = WEATHER_API
-    # city = "indianapolis"
-    # zipcode = '37122'
 
     geoip = base_url+"/geo/1.0/zip?zip="+zipcode+"&appid="+weather_api
     georesponse = requests.get(geoip)
@@ -137,15 +131,7 @@ def betterWeather(zipcode):
     highlow = 'High : ' + str(int(y['main']['temp_max']))+degree_sign + '<br>Low : ' +str(int(y['main']['temp_min']))+degree_sign
     sun = 'Sunrise : ' + str(sunrise) + '<br>Sunset : ' + str(sunset)
     humidity = 'Humidity : ' + str(y['main']['humidity']) + '%'
-    # print(y['name'])
-    # print(y['main']['temp_max'],'/',y['main']['temp_min'])
-    # print(sunrise,sunset)
-    # print(y['main']['humidity'],'%')
 
-    """
-    weather temp w icon in table format
-        weather_template = '<hr><h3>Weather for ' + city + '</h3><br><p ><table><tr><th>' + highlow  + '<br>' + sun + '<br>' + humidity + "</th><th><img src='" + icon_image +"'/></th></tr></table></p>"
-    """
     weather_template = '<hr><h3>Weather for ' + city + '</h3><br><p ><table><tr><th>' + highlow  + '<br>' + sun + '<br>' + humidity + "</th><th style='padding-left:0.8em'><img src='" + icon_image +"'/></th></tr></table></p>"
     # weather_template = '<hr><h3>Weather for ' + city + '</h3><br><p >' + highlow  + '<br>' + sun + '<br>' + humidity + "</p>"
     return weather_template
@@ -161,19 +147,18 @@ def getWotd():
     wotday = read.find('h2',class_='word-header-txt')
     print(wotday.getText())
     wotdeff=str(wotdef)
-    #print(wotdef)
     
     wotd_def = wotdeff[wotdeff.find('<p>')+3:wotdeff.find('</p>')]
-    #print(wotd_def)
+
     insensitive_wotd = re.compile(re.escape(wotday.getText()), re.IGNORECASE)
     wotd_linked = insensitive_wotd.sub('<a href=https://www.merriam-webster.com/word-of-the-day><em>'+wotday.getText()+'</em></a>', wotd_def)
-    # wotd_linked=wotd_def.replace(,'<a href=https://www.merriam-webster.com/word-of-the-day><em>'+wotday.getText()+'</em></a>',1)+''
+    
     print(wotd_linked)
     #return '<div><h3><b>Word of the day</h3>'+wotd_linked+'</div>'
     return '<hr><h3>Word of the Day</h3><br><p>' + wotd_linked +'</p>'
  
 word = getWotd()
-#print(word)
+
 webscrapeNews()
 template = open(r'email.html')
 soup = BeautifulSoup(template.read(), "html.parser")
@@ -187,13 +172,11 @@ subtitle = headline.p
 subtitle.string = headline_info[0]['subtitle'][:300] 
  
 link = headline.a
-#print(urls[i])
+
 link['href'] = urls[0]
 urls.pop(0)
 link.string = headline_info[0]['title'][:300]#urls[i]
-#print(headline)
 
-#print(headline)
 html_start = str(soup)[:str(soup).find(str(article_template))]
 #html_start.replace('src=""','src="'+headline_info[0]['image']+'"')
 
@@ -201,8 +184,7 @@ html_end = str(soup)[str(soup).find(str(article_template))+len(str(article_templ
  
 html_start = html_start.replace('\n','')
 html_end = html_end.replace('\n','')
- 
-#urls=['','','','','','','']
+
 newsletter_content = ""
 for i,article in enumerate(previews):
     print(i)
@@ -213,25 +195,20 @@ for i,article in enumerate(previews):
         article_template.img.replace_with(img)
     except:
         pass
-    #print(article_template.h1)
-    # title = article_template.h1
-    # title.string = article['title'][:300]
-    #print(article_template.p)
+
     subtitle = article_template.p
     subtitle.string = article['subtitle'][:300] 
  
     link = article_template.a
-    #print(urls[i])
+
     link['href'] = urls[i]
     link.string = article['title'][:300]#urls[i]
-    print(link)
+
     article_template.a.replace_with(link)
  
-    #print(article_template.div['class'])
     newsletter_content += str(article_template).replace('\n','')
 
-#pprint(newsletter_content)
-#pprint(newsletter_content)
+
 email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
 email_content=email_content.replace('</table></div><div class="columns"><table>','')
 
