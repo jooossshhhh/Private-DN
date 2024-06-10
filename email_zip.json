@@ -1,0 +1,19 @@
+{
+    "info": [
+        {
+            "name":"Josh",
+            "email":"jp.smith1010@gmail.com",
+            "zipcode":"37122"
+        },
+        {
+            "name":"Danny",
+            "email":"cerudica@hotmail.com",
+            "zipcode":"35801"
+        },
+        {
+            "name":"Reed",
+            "email":"r.hester116@gmail.com",
+            "zipcode":"37128"
+        }
+    ]
+}

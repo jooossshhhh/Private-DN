@@ -209,9 +209,16 @@ for i,article in enumerate(previews):
     newsletter_content += str(article_template).replace('\n','')
 
 
-email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
-email_content=email_content.replace('</table></div><div class="columns"><table>','')
+#email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
+#email_content=email_content.replace('</table></div><div class="columns"><table>','')
+import json
 
-email_alert('Daily News - '+todaysDate(),'test',email_content,['jp.smith1010@gmail.com'])
+f = open('email_zip.json')
+data = json.load(f)
+for i in data['info']:
+    print('Sending email to:',i['email'],i['zipcode'])
+    email_content =  html_start +  newsletter_content + betterWeather(i['zipcode']) + word + html_end
+    email_content=email_content.replace('</table></div><div class="columns"><table>','')
+    email_alert('Daily News - '+todaysDate(),'test',email_content,[i['email']])
  
  
