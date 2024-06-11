@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed May 17 13:39:25 2023
- 
-@author: josh.smith
-"""
+
 from pprint import pprint
 from bs4 import BeautifulSoup
-import requests, re, smtplib, datetime, os
+import requests, re, smtplib, datetime, os,json
 
 from email.message import EmailMessage
 from dotenv import load_dotenv
@@ -122,7 +117,7 @@ def betterWeather(zipcode):
     weather_url = base_url + "/data/2.5/weather?lat="+str(lat)+"&lon="+str(lng)+"&appid="+weather_api+"&units=imperial"
     response = requests.get(weather_url)
     y=response.json()
-    pprint(y)
+    #pprint(y)
     icon_image = "https://openweathermap.org/img/wn/" + y['weather'][0]['icon'] + "@2x.png"
     degree_sign = u'\N{DEGREE SIGN}'
     sunrise = datetime.datetime.fromtimestamp(y['sys']['sunrise']).strftime('%H:%M')
@@ -145,7 +140,7 @@ def getWotd():
     #wotd=read.find('div',class_='word-and-pronunciation')
     wotdef=read.find('div',class_='wod-definition-container')
     wotday = read.find('h2',class_='word-header-txt')
-    print(wotday.getText())
+    #print(wotday.getText())
     wotdeff=str(wotdef)
     
     wotd_def = wotdeff[wotdeff.find('<p>')+3:wotdeff.find('</p>')]
@@ -153,7 +148,7 @@ def getWotd():
     insensitive_wotd = re.compile(re.escape(wotday.getText()), re.IGNORECASE)
     wotd_linked = insensitive_wotd.sub('<a href=https://www.merriam-webster.com/word-of-the-day><em>'+wotday.getText()+'</em></a>', wotd_def)
     
-    print(wotd_linked)
+    #print(wotd_linked)
     #return '<div><h3><b>Word of the day</h3>'+wotd_linked+'</div>'
     return '<hr><h3>Word of the Day</h3><br><p>' + wotd_linked +'</p>'
  
@@ -211,14 +206,20 @@ for i,article in enumerate(previews):
 
 #email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
 #email_content=email_content.replace('</table></div><div class="columns"><table>','')
-import json
 
-f = open('email_zip.json')
-data = json.load(f)
-for i in data['info']:
-    print('Sending email to:',i['email'],i['zipcode'])
-    email_content =  html_start +  newsletter_content + betterWeather(i['zipcode']) + word + html_end
+def main():
+    f = open('email_zip.json')
+    data = json.load(f)
+    for i in data['info']:
+        print('Sending email to:',i['email'],i['zipcode'])
+        email_content =  html_start +  newsletter_content + betterWeather(i['zipcode']) + word + html_end
+        email_content=email_content.replace('</table></div><div class="columns"><table>','')
+        email_alert('Daily News - '+todaysDate(),'test',email_content,[i['email']])
+
+if __name__ == "__main__":
+    print('Running in Main!')
+    email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
     email_content=email_content.replace('</table></div><div class="columns"><table>','')
-    email_alert('Daily News - '+todaysDate(),'test',email_content,[i['email']])
+    email_alert('Daily News - '+todaysDate(),'test',email_content,["bksmith68@gmail.com"])
  
  
