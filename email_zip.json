@@ -14,6 +14,16 @@
             "name":"Reed",
             "email":"r.hester116@gmail.com",
             "zipcode":"37128"
+        },
+        {
+            "name":"Dad",
+            "email":"bksmith68@gmail.com",
+            "zipcode":"37122"
+        },
+        {
+            "name":"Mom",
+            "email":"teresa.smith@kennypipe.com",
+            "zipcode":"37122"
         }
     ]
 }

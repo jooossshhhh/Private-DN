@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3
 from pprint import pprint
 from bs4 import BeautifulSoup
 import requests, re, smtplib, datetime, os,json
@@ -220,6 +220,6 @@ if __name__ == "__main__":
     print('Running in Main!')
     email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
     email_content=email_content.replace('</table></div><div class="columns"><table>','')
-    email_alert('Daily News - '+todaysDate(),'test',email_content,["bksmith68@gmail.com"])
+    email_alert('Daily News - '+todaysDate(),'test',email_content,["jp.smith1010@gmail.com"])
  
  
