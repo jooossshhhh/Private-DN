@@ -61,50 +61,7 @@ def scrapin(url,user):
         print('There was a problem: %s' % (exc))
     res_web = BeautifulSoup(res.text,'html.parser')
     return res_web
-previews = []
-urls = []
-headline_info = []
-def getGoods(tags,img_class,desc = None):
-    for tag in tags:
- 
-        image = tag.find('div',class_=img_class)
-        image = str(image.find('img')['src'])
-        title = tag.find('a',class_='main-link')
-        #link = str(title['href'])
-        link = ''
-        urls.append('https://www.allsides.com'+str(title['href']))
 
-        title = title.getText()
-        if desc:
-            link = tag.find('div',class_='headline-roundup-description').getText()
-
-            article_preview = {
-                'title': str(title),
-               'subtitle': str(link),
-                'image': str(image)
-            }
-            headline_info.append(article_preview)
-            return
-        article_preview = {
-            'title': str(title),
-           'subtitle': str(link),
-            'image': str(image)
-        }
-
-        previews.append(article_preview)
- 
-def webscrapeNews():        
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
-        #website of choise
-        read_news = scrapin('https://www.allsides.com/',headers)
-        bigpapa = read_news.find_all('div',class_="headline-roundup large-roundup card-link")
-        papa = read_news.find_all('div',class_="headline-roundup medium-roundup card-link")
-        mama = read_news.find_all('div',class_="headline-roundup small-roundup card-link")
-        
-        
-        getGoods(bigpapa,'headline-roundup-image responsiveimg','here')
-        getGoods(papa,'headline-roundup-image responsiveimg')
-        #getGoods(mama,'headline-roundup-image')
 def betterWeather(zipcode):
     base_url = "https://api.openweathermap.org"
     weather_api = WEATHER_API
@@ -154,7 +111,9 @@ def getWotd():
  
 word = getWotd()
 
-webscrapeNews()
+# webscrapeNews()
+import more_news
+previews, urls, headline_info = more_news.main()
 template = open(r'email.html')
 soup = BeautifulSoup(template.read(), "html.parser")
 #word = BeautifulSoup(word, "html.parser")
@@ -182,7 +141,7 @@ html_end = html_end.replace('\n','')
 
 newsletter_content = ""
 for i,article in enumerate(previews):
-    print(i)
+    print('story:',i)
     try:
         img = article_template.img
         #print(img)
@@ -220,6 +179,5 @@ if __name__ == "__main__":
     print('Running in Main!')
     email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
     email_content=email_content.replace('</table></div><div class="columns"><table>','')
-    email_alert('Daily News - '+todaysDate(),'test',email_content,["jp.smith1010@gmail.com"])
- 
- 
+    print(email_content)
+    #email_alert('Daily News - '+todaysDate(),'test',email_content,["kps.report.email@gmail.com"])
