@@ -1,7 +1,7 @@
 import openmeteo_requests
 import requests,os,datetime
 import requests_cache
-import pandas as pd
+
 from retry_requests import retry
 from dotenv import load_dotenv
 
