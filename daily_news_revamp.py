@@ -11,6 +11,7 @@ load_dotenv()
 
 email = os.getenv('EMAIL')
 passwd = os.getenv('PASSWORD')
+admin = os.getenv('ADMIN_EMAIL')
 
 
 def email_alert(subject,body,alternative,recipients):
@@ -84,12 +85,10 @@ def getWotd():
  
 word = getWotd()
 
-# webscrapeNews()
 import more_news
 previews, urls, headline_info = more_news.main()
 template = open(r'email.html')
 soup = BeautifulSoup(template.read(), "html.parser")
-#word = BeautifulSoup(word, "html.parser")
 article_template = soup.find('div', attrs={'class':'columns'})
 
 headline = soup.find('div',attrs={'class':'headline'})
@@ -105,8 +104,6 @@ urls.pop(0)
 link.string = headline_info[0]['title'][:300]#urls[i]
 
 html_start = str(soup)[:str(soup).find(str(article_template))]
-#html_start.replace('src=""','src="'+headline_info[0]['image']+'"')
-
 html_end = str(soup)[str(soup).find(str(article_template))+len(str(article_template)):]
  
 html_start = html_start.replace('\n','')
@@ -117,7 +114,6 @@ for i,article in enumerate(previews):
     print('story:',i)
     try:
         img = article_template.img
-        #print(img)
         img['src'] = article['image']
         article_template.img.replace_with(img)
     except:
@@ -150,4 +146,4 @@ if __name__ == "__main__":
     email_content =  html_start +  newsletter_content + better_weather.bestWeather('37122') + word + html_end
     email_content=email_content.replace('</table></div><div class="columns"><table>','')
     #print(email_content)
-    email_alert('Daily News - '+todaysDate(),'test',email_content,["jp.smith1010@gmail.com"])
+    email_alert('Daily News - '+todaysDate(),'test',email_content,[admin])
