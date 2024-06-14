@@ -2,17 +2,16 @@
 from pprint import pprint
 from bs4 import BeautifulSoup
 import requests, re, smtplib, datetime, os,json
-
+import better_weather
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
 
 load_dotenv()
 
-api_key = os.getenv('API_KEY')
 email = os.getenv('EMAIL')
 passwd = os.getenv('PASSWORD')
-WEATHER_API = os.getenv('WEATHER_API_KEY')
+
 
 def email_alert(subject,body,alternative,recipients):
     for recipient in recipients:
@@ -61,32 +60,6 @@ def scrapin(url,user):
         print('There was a problem: %s' % (exc))
     res_web = BeautifulSoup(res.text,'html.parser')
     return res_web
-
-def betterWeather(zipcode):
-    base_url = "https://api.openweathermap.org"
-    weather_api = WEATHER_API
-
-    geoip = base_url+"/geo/1.0/zip?zip="+zipcode+"&appid="+weather_api
-    georesponse = requests.get(geoip)
-    x=georesponse.json()
-    lat = x['lat']
-    lng = x['lon']
-    weather_url = base_url + "/data/2.5/weather?lat="+str(lat)+"&lon="+str(lng)+"&appid="+weather_api+"&units=imperial"
-    response = requests.get(weather_url)
-    y=response.json()
-    #pprint(y)
-    icon_image = "https://openweathermap.org/img/wn/" + y['weather'][0]['icon'] + "@2x.png"
-    degree_sign = u'\N{DEGREE SIGN}'
-    sunrise = datetime.datetime.fromtimestamp(y['sys']['sunrise']).strftime('%H:%M')
-    sunset = datetime.datetime.fromtimestamp(y['sys']['sunset']).strftime('%H:%M')
-    city = str(y['name'])
-    highlow = 'High : ' + str(int(y['main']['temp_max']))+degree_sign + '<br>Low : ' +str(int(y['main']['temp_min']))+degree_sign
-    sun = 'Sunrise : ' + str(sunrise) + '<br>Sunset : ' + str(sunset)
-    humidity = 'Humidity : ' + str(y['main']['humidity']) + '%'
-
-    weather_template = '<hr><h3>Weather for ' + city + '</h3><br><p ><table><tr><th>' + highlow  + '<br>' + sun + '<br>' + humidity + "</th><th style='padding-left:0.8em'><img src='" + icon_image +"'/></th></tr></table></p>"
-    # weather_template = '<hr><h3>Weather for ' + city + '</h3><br><p >' + highlow  + '<br>' + sun + '<br>' + humidity + "</p>"
-    return weather_template
 
 def getWotd():
     
@@ -163,21 +136,18 @@ for i,article in enumerate(previews):
     newsletter_content += str(article_template).replace('\n','')
 
 
-#email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
-#email_content=email_content.replace('</table></div><div class="columns"><table>','')
-
 def main():
     f = open('email_zip.json')
     data = json.load(f)
     for i in data['info']:
         print('Sending email to:',i['email'],i['zipcode'])
-        email_content =  html_start +  newsletter_content + betterWeather(i['zipcode']) + word + html_end
+        email_content =  html_start +  newsletter_content + better_weather.bestWeather(i['zipcode']) + word + html_end
         email_content=email_content.replace('</table></div><div class="columns"><table>','')
         email_alert('Daily News - '+todaysDate(),'test',email_content,[i['email']])
 
 if __name__ == "__main__":
     print('Running in Main!')
-    email_content =  html_start +  newsletter_content + betterWeather('37122') + word + html_end
+    email_content =  html_start +  newsletter_content + better_weather.bestWeather('37122') + word + html_end
     email_content=email_content.replace('</table></div><div class="columns"><table>','')
-    print(email_content)
-    #email_alert('Daily News - '+todaysDate(),'test',email_content,["kps.report.email@gmail.com"])
+    #print(email_content)
+    email_alert('Daily News - '+todaysDate(),'test',email_content,["jp.smith1010@gmail.com"])
