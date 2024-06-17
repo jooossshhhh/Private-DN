@@ -77,11 +77,11 @@ def getWotd():
     wotd_def = wotdeff[wotdeff.find('<p>')+3:wotdeff.find('</p>')]
 
     insensitive_wotd = re.compile(re.escape(wotday.getText()), re.IGNORECASE)
-    wotd_linked = insensitive_wotd.sub('<a href=https://www.merriam-webster.com/word-of-the-day><em>'+wotday.getText()+'</em></a>', wotd_def)
+    wotd_linked = insensitive_wotd.sub('<a href=https://www.merriam-webster.com/word-of-the-day><em>'+wotday.getText().upper()+'</em></a>', wotd_def)
     
     #print(wotd_linked)
     #return '<div><h3><b>Word of the day</h3>'+wotd_linked+'</div>'
-    return '<hr><h3>Word of the Day</h3><br><p>' + wotd_linked +'</p>'
+    return '<hr><h3>Word of the Day - '+wotday.getText()+'</h3><br><p>' + wotd_linked +'</p>'
  
 word = getWotd()
 
